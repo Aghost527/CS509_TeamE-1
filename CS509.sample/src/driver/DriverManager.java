@@ -1,6 +1,7 @@
 package driver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Flight.Flight;
@@ -18,6 +19,7 @@ public class DriverManager {
 		return flights;
 		
 	}
+
 	/*
 	 * for the time being, it can only search flight within one day
 	 */
@@ -49,6 +51,46 @@ public class DriverManager {
 				}
 			}
 		}
+		System.out.println("res size:"+res.size());
+//		Flights flights2 =
+		
+		return res;
+		
+	}
+	
+	public List<Flights> searchFlightsWithTwoStop(String Arrival,String time,String Departure){
+		ServerInterface resSys = new ServerInterface();
+		List<Flights> res=new ArrayList<Flights>();
+		HashMap<String,Flights> map=new HashMap<String,Flights>();
+		
+		Flights flights1 = resSys.getFlighs("TeamE","PHL","2017_05_10",true);
+//		Flights flights1 = resSys.getFlighs("TeamE",Departure,time,true);//true means search by departure
+		flights1.sortByArrivalAirport();
+		
+		Flights flights3 = resSys.getFlighs("TeamE","RDU","2017_05_10",false);
+//		Flights flights3 = resSys.getFlighs("TeamE",Arrival,time,false);
+		flights3.sortByArrivalAirport();
+		
+		for(Flight f1: flights1){
+			if(!map.containsKey(f1.getArrival())){
+				map.put(f1.getArrival(),resSys.getFlighs("TeamE",f1.getArrival(),time,true) );
+			}
+			for(Flight f2:map.get(f1.getArrival())){
+				for(Flight f3:flights3){
+					if(f3.getDeparture().equals(f2.getArrival())){
+						Flights flight=new Flights();
+						flight.add(f1);
+						flight.add(f2);
+						flight.add(f3);
+						res.add(flight);
+						
+						
+					}
+				}
+			}
+			
+		}
+		
 		System.out.println("res size:"+res.size());
 //		Flights flights2 =
 		
