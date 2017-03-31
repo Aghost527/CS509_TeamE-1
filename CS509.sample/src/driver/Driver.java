@@ -27,14 +27,15 @@ public class Driver {
 //			return;
 //		}
 		
-//		String teamName = "TeamE";
-//		// Try to get a list of airports
-//		Airports airports = resSys.getAirports(teamName);
-//		for (Airport airport : airports) {
-//			System.out.println(airport.toString());
-//		}
-		Scanner s = new Scanner(System.in);
 		String teamName = "TeamE";
+		// Try to get a list of airports
+		ServerInterface resSys=new ServerInterface();
+		Airports airports = resSys.getAirports(teamName);
+		for (Airport airport : airports) {
+			System.out.println(airport.toString());
+		}
+		Scanner s = new Scanner(System.in);
+//		String teamName = "TeamE";
 		// Try to get a list of airports
 //		while(true){
 		
@@ -45,8 +46,7 @@ public class Driver {
 		System.out.println("arrivalAiportCode e.g. RDU :");
 		String arrival = s.nextLine();
 
-//		Flights flights = driverManager.searchFlightsWithoutStop(arrival, time, departure);
-		
+//		Flights flights = driverManager.searchFlightsWithoutStop(arrival, time, departure);	
 //		for (Flight flight : flights) {
 //			System.out.println(flight.toString());
 //		}
@@ -63,7 +63,7 @@ public class Driver {
 		
 		System.out.println("finished");
 		System.out.println("res size:"+flightlis.size());
-//		}
+		
 		
 	}
 }

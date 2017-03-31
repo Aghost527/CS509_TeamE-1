@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+
 public class Flights extends ArrayList<Flight> {
 	private static final long serialVersionUID = 1L;
 	

@@ -1,6 +1,6 @@
 package Flight;
 
-import Time.Time;
+import java.util.Date;
 
 /**
  * This class holds values pertaining to a single Airport. Class member attributes
@@ -29,8 +29,8 @@ public class Flight {
 	private String number;
 	private String arrival;              // Three character code of the Arrival airport
 	private String departure;              // Three character code of the Departure airport
-	private Time arrivalTime;
-	private Time departureTime;
+	private Date arrivalTime;
+	private Date departureTime;
 
 	private Seating seating;
 	private int flightTime;
@@ -51,7 +51,7 @@ public class Flight {
 	 * @param seats
 	 */
 	public Flight(String airplane, String number, String arrival, String departure, 
-			Time arrivalTime, Time departureTime, Seating seats, int flightTime) {
+			Date arrivalTime, Date departureTime, Seating seats, int flightTime) {
 		super();
 		if (!isValidCode(departure)) 
 			throw new IllegalArgumentException(departure);
@@ -148,25 +148,25 @@ public class Flight {
 	/**
 	 * @return the departureTime
 	 */
-	public Time getDepartureTime() {
+	public Date getDepartureTime() {
 		return departureTime;
 	}
 	/**
 	 * @param departureTime the departureTime to set
 	 */
-	public void setDepartureTime(Time departureTime) {
+	public void setDepartureTime(Date departureTime) {
 		this.departureTime = departureTime;
 	}
 	/**
 	 * @return the arrivalTime
 	 */
-	public Time getArrivalTime() {
+	public Date getArrivalTime() {
 		return arrivalTime;
 	}
 	/**
 	 * @param arrivalTime the arrivalTime to set
 	 */
-	public void setArrivalTime(Time arrivalTime) {
+	public void setArrivalTime(Date arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 	/**

@@ -2,6 +2,13 @@ package dao;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,8 +29,27 @@ import Time.Time;
 
 
 
-
 public class DaoFlights {
+	
+	public final static Map monthMap = new HashMap() {/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+	{    
+		put("Jan","01");
+		put("Feb","02");
+		put("Mar","03");
+		put("Apr","04");
+		put("May","05");
+		put("Jun","06");
+		put("Jul","07");
+		put("Aug","08");
+		put("Sep","09");
+		put("Oct","10");
+		put("Nov","11");
+		put("Dec","12");	}};  
+	
 	public static Flights addAll (String xmlFlights) throws NullPointerException {
 		Flights flights = new Flights();
 		
@@ -60,8 +86,8 @@ public class DaoFlights {
 			
 			String arrivalCode;
 			String arrivalTime;
-			
-			 
+
+				 
 			
 			// The flight element has attributes of Name and 3 character flight code
 			Element elementFlight = (Element) nodeFlight;
@@ -78,8 +104,20 @@ public class DaoFlights {
 //			System.out.println(departureCode);
 			Element deTime = (Element)Departure.getElementsByTagName("Time").item(0);
 			departureTime = getCharacterDataFromElement(deTime);
+			System.out.println(departureTime);
 			String[] dTime=departureTime.split(" ");
-			Time tDeTime=new Time(dTime[0],dTime[1],dTime[2],dTime[3],dTime[4]);
+//			Time tDeTime=new Time(dTime[0],dTime[1],dTime[2],dTime[3],dTime[4]);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy MM dd HH:mm ZZZ");
+//			sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+			Date deDate = null;
+			try {
+				deDate = sdf.parse(dTime[0]+" "+monthMap.get(dTime[1])+" "+dTime[2]+" "+dTime[3]+" "+dTime[4]);
+//				deDate = sdf.parse(departureTime);
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			//elementLatLng = (Element)elementFlight.getElementsByTagName("Longitude").item(0);
 			//longitude = Double.parseDouble(getCharacterDataFromElement(elementLatLng));
@@ -91,7 +129,16 @@ public class DaoFlights {
 			Element arTime = (Element)Arrival.getElementsByTagName("Time").item(0);
 			arrivalTime = getCharacterDataFromElement(arTime);
 			String[] aTime=arrivalTime.split(" ");
-			Time tArTime=new Time(aTime[0],aTime[1],aTime[2],aTime[3],aTime[4]);
+//			Time tArTime=new Time(aTime[0],aTime[1],aTime[2],aTime[3],aTime[4]);
+			
+			Date ArDate = null;
+			try {
+				ArDate = sdf.parse(aTime[0]+" "+monthMap.get(aTime[1])+" "+aTime[2]+" "+aTime[3]+" "+aTime[4]);
+//				ArDate = sdf.parse(arrivingTime);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			Element flightSeating;
 			flightSeating = (Element)elementFlight.getElementsByTagName("Seating").item(0);
@@ -110,7 +157,7 @@ public class DaoFlights {
 			 */
 			
 //			
-			return new Flight( Airplane,  Number,  arrivalCode, departureCode,tDeTime ,  tArTime,
+			return new Flight( Airplane,  Number,  arrivalCode, departureCode,ArDate ,  deDate,
 					  seats,FlightTime );
 		}
 		

@@ -3,6 +3,8 @@
  */
 package utils;
 
+import Flight.Flights;
+
 /**
  * @author blake
  * @version 1.2
@@ -29,7 +31,11 @@ public class QueryFactory {
 	public static String getArrivingAirplanes( String teamName, String airportCode, String Date){
 		return "?team=" + teamName + "&action=list&list_type=arriving&airport=" + airportCode + "&day=" + Date;
 	}
-
+	
+	
+	public static String reserveSeats(String teamName, String xmlFlights){
+		return "?team=" + teamName + "&action=buyTickets&flightData=" +xmlFlights ;
+	}
 	
 	/**
 	 * Lock the server database so updates can be written

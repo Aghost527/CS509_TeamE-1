@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 
 import Flight.Flights;
 import airport.Airports;
@@ -93,8 +94,10 @@ public class ServerInterface {
 	
 	/**
 	 * get Flights, false: by arrival; true: by departure
+	 * @throws ParseException 
+	 * @throws NullPointerException 
 	 */
-	public Flights getFlighs (String teamName, String airportCode, String Date, boolean isByDeparture) {
+	public Flights getFlighs (String teamName, String airportCode, String Date, boolean isByDeparture) throws NullPointerException {
 
 		URL url;
 		HttpURLConnection connection;

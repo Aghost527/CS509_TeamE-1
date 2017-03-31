@@ -43,7 +43,10 @@ public class DriverManager {
 //			
 			for(Flight f2 :flights2){
 				System.out.println(f2.getDeparture());
-				if(f1.getArrival().equals(f2.getDeparture())){
+				if(f1.getArrival().equals(f2.getDeparture())&f1.getArrivalTime().before(f2.getDepartureTime())){
+					long diff = f2.getDepartureTime().getTime()-f1.getArrivalTime().getTime();
+					long minutes = diff / (1000 * 60);
+					if(minutes>240|minutes<30){continue;}
 					Flights flight=new Flights();
 					flight.add(f1);
 					flight.add(f2);
@@ -76,17 +79,25 @@ public class DriverManager {
 				map.put(f1.getArrival(),resSys.getFlighs("TeamE",f1.getArrival(),time,true) );
 			}
 			for(Flight f2:map.get(f1.getArrival())){
-				for(Flight f3:flights3){
-					if(f3.getDeparture().equals(f2.getArrival())){
-						Flights flight=new Flights();
-						flight.add(f1);
-						flight.add(f2);
-						flight.add(f3);
-						res.add(flight);
+				if(f2.getDepartureTime().after(f1.getArrivalTime())) {  // f2.departTime>f1.arrivalTime
+					long diff12 = f2.getDepartureTime().getTime()-f1.getArrivalTime().getTime()/60000; //60000ms==1 min
+		 
+					if(diff12>240|diff12<30){continue;}
+					
+					for(Flight f3:flights3){
+						if(f3.getDeparture().equals(f2.getArrival())&f3.getDepartureTime().after(f2.getDepartureTime())){
+							long diff23 = f2.getDepartureTime().getTime()-f1.getArrivalTime().getTime()/60000; //60000ms==1 min
+							 
+							if(diff23>240|diff23<30){continue;}
+							Flights flight=new Flights();
+							flight.add(f1);
+							flight.add(f2);
+							flight.add(f3);
+							res.add(flight);
 						
 						
 					}
-				}
+				}}
 			}
 			
 		}
