@@ -10,30 +10,40 @@ import dao.ServerInterface;
 
 public class DriverManager {
 	
-	public Flights searchFlightsWithoutStop(String Arrival,String time,String Departure){
+	public List<Flights> searchFlightsWithoutStop(String departure,String time,String arrival ){
+		List<Flights> flist=new ArrayList<Flights>();
+		arrival=arrival.equals("")?"RDU":arrival;
+		time=time.equals("")?"2017_05_09":time;
+		departure=departure.equals("")?"BOS":departure;
+		
 		ServerInterface resSys = new ServerInterface();
-		Flights flights = resSys.getFlighs("TeamE","BOS","2017_05_10",true);
-//		Flights flights = resSys.getFlighs("TeamE",Departure,time);
-		flights.sortByArrivalAirport();
-		flights=flights.filterByArrival("RDU", flights);
-		return flights;
+//		Flights flights = resSys.getFlighs("TeamE","BOS","2017_05_10",true);
+		Flights flights = resSys.getFlighs("TeamE",departure,time,true);
+//		flights.sortByArrivalAirport();
+		flights=flights.filterByArrival(arrival, flights);
+		for(Flight f: flights){
+			Flights tmp=new Flights();
+			tmp.add(f);
+			flist.add(tmp);
+		}
+		return flist;
 		
 	}
 
 	/*
 	 * for the time being, it can only search flight within one day
 	 */
-	public List<Flights> searchFlightsWithOneStop(String Arrival,String time,String Departure){
+	public List<Flights> searchFlightsWithOneStop(String arrival,String time,String departure){
 		ServerInterface resSys = new ServerInterface();
 		List<Flights> res=new ArrayList<Flights>();
 		Flights flights1 = resSys.getFlighs("TeamE","PHL","2017_05_10",true);
-//		Flights flights1 = resSys.getFlighs("TeamE",Departure,time,true);//true means search by departure
+//		Flights flights1 = resSys.getFlighs("TeamE",departure,time,true);//true means search by departure
 		flights1.sortByArrivalAirport();
 		System.out.println(flights1.size());
 		
 		
 		Flights flights2 = resSys.getFlighs("TeamE","RDU","2017_05_10",false);
-//		Flights flights2 = resSys.getFlighs("TeamE",Arrival,time,false);
+//		Flights flights2 = resSys.getFlighs("TeamE",arrival,time,false);
 		flights2.sortByArrivalAirport();
 
 		System.out.println(flights2.size());
@@ -61,17 +71,17 @@ public class DriverManager {
 		
 	}
 	
-	public List<Flights> searchFlightsWithTwoStop(String Arrival,String time,String Departure){
+	public List<Flights> searchFlightsWithTwoStop(String arrival,String time,String departure){
 		ServerInterface resSys = new ServerInterface();
 		List<Flights> res=new ArrayList<Flights>();
 		HashMap<String,Flights> map=new HashMap<String,Flights>();
 		
 		Flights flights1 = resSys.getFlighs("TeamE","PHL","2017_05_10",true);
-//		Flights flights1 = resSys.getFlighs("TeamE",Departure,time,true);//true means search by departure
+//		Flights flights1 = resSys.getFlighs("TeamE",departure,time,true);//true means search by departure
 		flights1.sortByArrivalAirport();
 		
 		Flights flights3 = resSys.getFlighs("TeamE","RDU","2017_05_10",false);
-//		Flights flights3 = resSys.getFlighs("TeamE",Arrival,time,false);
+//		Flights flights3 = resSys.getFlighs("TeamE",arrival,time,false);
 		flights3.sortByArrivalAirport();
 		
 		for(Flight f1: flights1){
@@ -106,6 +116,32 @@ public class DriverManager {
 //		Flights flights2 =
 		
 		return res;
+		
+	}
+	
+	public boolean buyTicket(Flights flist, String seatType, String teamName){
+		ServerInterface resSys = new ServerInterface();
+		
+		resSys.lock(teamName);
+		String xmlFlights=flights2xml(flist,seatType);
+		resSys.buyTickets(teamName, xmlFlights);
+		return resSys.unlock(teamName);
+	}
+	/**
+	 * <Flights>
+	 *	<Flight number=DDDDD seating=SEAT_TYPE/>
+	 *	<Flight number=DDDDD seating=SEAT_TYPE/>
+	 *</Flights>
+	 * @param flist
+	 * @param seatType
+	 * @return
+	 */
+	public String flights2xml(Flights flist, String seatType){
+		String res="<Flights>";
+		for(Flight f:flist){
+			res+="<Flight number="+f.getNumber()+" seating="+seatType+"/>";
+		}
+		return res+"</Flights>";
 		
 	}
 	

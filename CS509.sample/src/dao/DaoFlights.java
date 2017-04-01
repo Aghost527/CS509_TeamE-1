@@ -101,10 +101,9 @@ public class DaoFlights {
 			
 			Element deCode = (Element)Departure.getElementsByTagName("Code").item(0);
 			departureCode = getCharacterDataFromElement(deCode);
-//			System.out.println(departureCode);
 			Element deTime = (Element)Departure.getElementsByTagName("Time").item(0);
 			departureTime = getCharacterDataFromElement(deTime);
-			System.out.println(departureTime);
+			
 			String[] dTime=departureTime.split(" ");
 //			Time tDeTime=new Time(dTime[0],dTime[1],dTime[2],dTime[3],dTime[4]);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy MM dd HH:mm ZZZ");

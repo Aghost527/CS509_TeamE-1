@@ -7,6 +7,7 @@ import java.util.Comparator;
 
 public class Flights extends ArrayList<Flight> {
 	private static final long serialVersionUID = 1L;
+	private int totalprice=0;
 	
 	public void sortByDepartureAirport(Flights flight){
 		 Comparator<Flight> comparator = new Comparator<Flight>(){
@@ -53,6 +54,7 @@ public class Flights extends ArrayList<Flight> {
 		 }
 		
 		 }; 
+		 Collections.sort(this, comparator);
 	}
 
 	public void sortbyfirstclassprice(Flights flight){
@@ -77,6 +79,7 @@ public class Flights extends ArrayList<Flight> {
 		 }
 		
 		 }; 
+		 Collections.sort(this, comparator);
 	}
 		 
 
@@ -102,6 +105,7 @@ public class Flights extends ArrayList<Flight> {
 		}
 		return "Flights:"+s;
 	}
+	
 	
 	
 	

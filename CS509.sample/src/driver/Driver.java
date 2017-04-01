@@ -20,22 +20,21 @@ public class Driver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+		Scanner s = new Scanner(System.in);
+		String teamName = "TeamE";
 //		if (args.length != 1) {
 //			System.err.println("usage: CS509.sample teamName");
 //			System.exit(-1);
 //			return;
 //		}
 		
-		String teamName = "TeamE";
-		// Try to get a list of airports
-		ServerInterface resSys=new ServerInterface();
-		Airports airports = resSys.getAirports(teamName);
-		for (Airport airport : airports) {
-			System.out.println(airport.toString());
-		}
-		Scanner s = new Scanner(System.in);
-//		String teamName = "TeamE";
+			// Try to get a list of airports
+//		ServerInterface resSys=new ServerInterface();
+//		Airports airports = resSys.getAirports(teamName);
+//		for (Airport airport : airports) {
+//			System.out.println(airport.toString());
+//		}
+
 		// Try to get a list of airports
 //		while(true){
 		
@@ -46,23 +45,20 @@ public class Driver {
 		System.out.println("arrivalAiportCode e.g. RDU :");
 		String arrival = s.nextLine();
 
-//		Flights flights = driverManager.searchFlightsWithoutStop(arrival, time, departure);	
-//		for (Flight flight : flights) {
-//			System.out.println(flight.toString());
-//		}
+		List<Flights> flightlis = driverManager.searchFlightsWithoutStop(departure, time, arrival );
+		
 		
 //		List<Flights> flightlis = driverManager.searchFlightsWithOneStop(arrival, time, departure);
-//		for(Flights flight  :flightlis){
-//			System.out.println(flight.toString());
-//		}
+
 		
-		List<Flights> flightlis = driverManager.searchFlightsWithTwoStop(arrival, time, departure);
+//		List<Flights> flightlis = driverManager.searchFlightsWithTwoStop(arrival, time, departure);
+
 		for(Flights flight  :flightlis){
-			System.out.println(flight.toString());
-		}
-		
+		System.out.println(flight.toString());
+		System.out.println(driverManager.flights2xml(flight, "coach"));
+	}
 		System.out.println("finished");
-		System.out.println("res size:"+flightlis.size());
+		System.out.println("result size:"+flightlis.size());
 		
 		
 	}

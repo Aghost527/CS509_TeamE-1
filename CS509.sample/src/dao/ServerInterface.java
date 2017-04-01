@@ -251,4 +251,57 @@ public class ServerInterface {
 		}
 		return true;
 	}
+
+	public boolean buyTickets (String teamName, String xmlFlights) {
+
+		URL url;
+		HttpURLConnection connection;
+
+		try {
+			/**
+			 * Create an HTTP connection to the server for a POST 
+			 */
+			url = new URL(mUrlBase + QueryFactory.reserveSeats(teamName, xmlFlights));
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("User-Agent", teamName);
+
+			/**
+			 * If response code of SUCCESS read the XML string returned
+			 * line by line to build the full return string
+			 */
+			int responseCode = connection.getResponseCode();
+			System.out.println("\nSending 'POST' to buy ticket");
+			System.out.println(("\nResponse Code : " + responseCode));
+//			if (responseCode >= HttpURLConnection.HTTP_OK) {
+//				String encoding = connection.getContentEncoding();
+//				encoding = (encoding == null ? "UTF-8" : encoding);
+//			
+//				
+//
+//			}
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String line;
+			StringBuffer response = new StringBuffer();
+			
+			while ((line = in.readLine()) != null) {
+				response.append(line);
+			}
+			in.close();
+			
+			System.out.println(response.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
+		//daoflights
+		return true;
+		
+	}
+	
 }
