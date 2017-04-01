@@ -45,17 +45,19 @@ public class Driver {
 		System.out.println("arrivalAiportCode e.g. RDU :");
 		String arrival = s.nextLine();
 
-		List<Flights> flightlis = driverManager.searchFlightsWithoutStop(departure, time, arrival );
+		
+//		List<Flights> flightlis = driverManager.searchFlightsWithoutStop(departure, time, arrival );
 		
 		
 //		List<Flights> flightlis = driverManager.searchFlightsWithOneStop(arrival, time, departure);
 
 		
-//		List<Flights> flightlis = driverManager.searchFlightsWithTwoStop(arrival, time, departure);
+		List<Flights> flightlis = driverManager.searchFlightsWithTwoStop(arrival, time, departure);
 
+		//output
 		for(Flights flight  :flightlis){
 		System.out.println(flight.toString());
-		System.out.println(driverManager.flights2xml(flight, "coach"));
+//		System.out.println(driverManager.flights2xml(flight, "coach"));
 	}
 		System.out.println("finished");
 		System.out.println("result size:"+flightlis.size());

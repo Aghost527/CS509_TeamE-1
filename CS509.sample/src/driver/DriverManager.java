@@ -1,6 +1,10 @@
 package driver;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,10 +20,12 @@ public class DriverManager {
 		time=time.equals("")?"2017_05_09":time;
 		departure=departure.equals("")?"BOS":departure;
 		
+		
+
 		ServerInterface resSys = new ServerInterface();
 //		Flights flights = resSys.getFlighs("TeamE","BOS","2017_05_10",true);
-		Flights flights = resSys.getFlighs("TeamE",departure,time,true);
-//		flights.sortByArrivalAirport();
+		Flights flights = resSys.getFlightsFor2Days("TeamE",departure,time,true);
+		flights.sortByArrivalAirport();
 		flights=flights.filterByArrival(arrival, flights);
 		for(Flight f: flights){
 			Flights tmp=new Flights();
@@ -36,14 +42,18 @@ public class DriverManager {
 	public List<Flights> searchFlightsWithOneStop(String arrival,String time,String departure){
 		ServerInterface resSys = new ServerInterface();
 		List<Flights> res=new ArrayList<Flights>();
-		Flights flights1 = resSys.getFlighs("TeamE","PHL","2017_05_10",true);
-//		Flights flights1 = resSys.getFlighs("TeamE",departure,time,true);//true means search by departure
+		arrival=arrival.equals("")?"RDU":arrival;
+		time=time.equals("")?"2017_05_09":time;
+		departure=departure.equals("")?"BOS":departure;
+		
+//		Flights flights1 = resSys.getFlightsFor2Days("TeamE","PHL","2017_05_10",true);
+		Flights flights1 = resSys.getFlightsFor2Days("TeamE",departure,time,true);//true means search by departure
 		flights1.sortByArrivalAirport();
 		System.out.println(flights1.size());
 		
 		
-		Flights flights2 = resSys.getFlighs("TeamE","RDU","2017_05_10",false);
-//		Flights flights2 = resSys.getFlighs("TeamE",arrival,time,false);
+//		Flights flights2 = resSys.getFlightsFor2Days("TeamE","RDU","2017_05_10",false);
+		Flights flights2 = resSys.getFlightsFor2Days("TeamE",arrival,time,false);
 		flights2.sortByArrivalAirport();
 
 		System.out.println(flights2.size());
@@ -75,28 +85,31 @@ public class DriverManager {
 		ServerInterface resSys = new ServerInterface();
 		List<Flights> res=new ArrayList<Flights>();
 		HashMap<String,Flights> map=new HashMap<String,Flights>();
+		arrival=arrival.equals("")?"RDU":arrival;
+		time=time.equals("")?"2017_05_09":time;
+		departure=departure.equals("")?"BOS":departure;
 		
-		Flights flights1 = resSys.getFlighs("TeamE","PHL","2017_05_10",true);
-//		Flights flights1 = resSys.getFlighs("TeamE",departure,time,true);//true means search by departure
-		flights1.sortByArrivalAirport();
+//		Flights flights1 = resSys.getFlightsFor2Days("TeamE","PHL","2017_05_10",true);
+		Flights flights1 = resSys.getFlightsFor2Days("TeamE",departure,time,true);//true means search by departure
+//		flights1.sortByArrivalAirport();
 		
-		Flights flights3 = resSys.getFlighs("TeamE","RDU","2017_05_10",false);
-//		Flights flights3 = resSys.getFlighs("TeamE",arrival,time,false);
+//		Flights flights3 = resSys.getFlightsFor2Days("TeamE","RDU","2017_05_10",false);
+		Flights flights3 = resSys.getFlightsFor2Days("TeamE",arrival,time,false);
 		flights3.sortByArrivalAirport();
 		
 		for(Flight f1: flights1){
 			if(!map.containsKey(f1.getArrival())){
-				map.put(f1.getArrival(),resSys.getFlighs("TeamE",f1.getArrival(),time,true) );
+				map.put(f1.getArrival(),resSys.getFlightsFor2Days("TeamE",f1.getArrival(),time,true) );
 			}
+//			System.out.println(map.get(f1.getArrival()).size()+"len");
 			for(Flight f2:map.get(f1.getArrival())){
 				if(f2.getDepartureTime().after(f1.getArrivalTime())) {  // f2.departTime>f1.arrivalTime
-					long diff12 = f2.getDepartureTime().getTime()-f1.getArrivalTime().getTime()/60000; //60000ms==1 min
-		 
+					long diff12 = (f2.getDepartureTime().getTime()-f1.getArrivalTime().getTime())/60000; //60000ms==1 min
 					if(diff12>240|diff12<30){continue;}
 					
 					for(Flight f3:flights3){
 						if(f3.getDeparture().equals(f2.getArrival())&f3.getDepartureTime().after(f2.getDepartureTime())){
-							long diff23 = f2.getDepartureTime().getTime()-f1.getArrivalTime().getTime()/60000; //60000ms==1 min
+							long diff23 = (f3.getDepartureTime().getTime()-f2.getArrivalTime().getTime())/60000; //60000ms==1 min
 							 
 							if(diff23>240|diff23<30){continue;}
 							Flights flight=new Flights();

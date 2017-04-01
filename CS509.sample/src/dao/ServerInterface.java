@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import Flight.Flights;
 import airport.Airports;
@@ -92,12 +95,33 @@ public class ServerInterface {
 		
 	}
 	
+	public Flights getFlightsFor2Days(String teamName, String airportCode, String Date, boolean isByDeparture) throws NullPointerException {
+		//add 1 day and search tomorrow's flights
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd");
+		Date deDate=null;
+		try {
+			 deDate = sdf.parse(Date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(deDate);
+		cal.add(Calendar.DATE, 1);
+		Flights flights=this.getFlights(teamName, airportCode, Date, isByDeparture);
+		flights.addAll(this.getFlights(teamName, airportCode,sdf.format( cal.getTime()), isByDeparture));
+	
+		return flights;
+		
+	}
+	
+	
 	/**
 	 * get Flights, false: by arrival; true: by departure
 	 * @throws ParseException 
 	 * @throws NullPointerException 
 	 */
-	public Flights getFlighs (String teamName, String airportCode, String Date, boolean isByDeparture) throws NullPointerException {
+	public Flights getFlights (String teamName, String airportCode, String Date, boolean isByDeparture) throws NullPointerException {
 
 		URL url;
 		HttpURLConnection connection;
@@ -143,7 +167,7 @@ public class ServerInterface {
 		xmlFlights = result.toString();
 //		System.out.println("xmlFlights"+xmlFlights);
 		flights = DaoFlights.addAll(xmlFlights);
-		//daoflights
+		
 		return flights;
 		
 	}
