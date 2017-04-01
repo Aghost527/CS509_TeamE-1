@@ -28,6 +28,7 @@ public class DriverManager {
 		flights.sortByArrivalAirport();
 		flights=flights.filterByArrival(arrival, flights);
 		for(Flight f: flights){
+//			if(f.getDepartureTime().before(arg0))
 			Flights tmp=new Flights();
 			tmp.add(f);
 			flist.add(tmp);

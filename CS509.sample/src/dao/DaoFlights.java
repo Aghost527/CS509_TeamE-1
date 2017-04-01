@@ -25,13 +25,13 @@ import org.xml.sax.SAXException;
 import Flight.Flight;
 import Flight.Flights;
 import Flight.Seating;
-import Time.Time;
+import utils.Saps;
 
 
 
 public class DaoFlights {
 	
-	public final static Map monthMap = new HashMap() {/**
+	public final static Map<String, String> monthMap = new HashMap<String, String>() {/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
@@ -107,7 +107,7 @@ public class DaoFlights {
 			String[] dTime=departureTime.split(" ");
 //			Time tDeTime=new Time(dTime[0],dTime[1],dTime[2],dTime[3],dTime[4]);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy MM dd HH:mm ZZZ");
-//			sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT"+Saps.timeZoneMap.get(departureCode)));
 			Date deDate = null;
 			try {
 				deDate = sdf.parse(dTime[0]+" "+monthMap.get(dTime[1])+" "+dTime[2]+" "+dTime[3]+" "+dTime[4]);
@@ -130,9 +130,13 @@ public class DaoFlights {
 			String[] aTime=arrivalTime.split(" ");
 //			Time tArTime=new Time(aTime[0],aTime[1],aTime[2],aTime[3],aTime[4]);
 			
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT"+Saps.timeZoneMap.get(arrivalCode)));
+			
 			Date ArDate = null;
 			try {
 				ArDate = sdf.parse(aTime[0]+" "+monthMap.get(aTime[1])+" "+aTime[2]+" "+aTime[3]+" "+aTime[4]);
+//				System.out.println(ArDate+"  ;  TZ:"+sdf.getTimeZone());
+				
 //				ArDate = sdf.parse(arrivingTime);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block

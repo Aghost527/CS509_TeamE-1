@@ -32,7 +32,8 @@ public class Driver {
 //		ServerInterface resSys=new ServerInterface();
 //		Airports airports = resSys.getAirports(teamName);
 //		for (Airport airport : airports) {
-//			System.out.println(airport.toString());
+////			System.out.println(airport.toString());
+//			System.out.println("put(\""+airport.code()+"\","+(int)airport.longitude()/15+");");
 //		}
 
 		// Try to get a list of airports
@@ -46,13 +47,13 @@ public class Driver {
 		String arrival = s.nextLine();
 
 		
-//		List<Flights> flightlis = driverManager.searchFlightsWithoutStop(departure, time, arrival );
+		List<Flights> flightlis = driverManager.searchFlightsWithoutStop(departure, time, arrival );
 		
 		
 //		List<Flights> flightlis = driverManager.searchFlightsWithOneStop(arrival, time, departure);
 
 		
-		List<Flights> flightlis = driverManager.searchFlightsWithTwoStop(arrival, time, departure);
+//		List<Flights> flightlis = driverManager.searchFlightsWithTwoStop(arrival, time, departure);
 
 		//output
 		for(Flights flight  :flightlis){
