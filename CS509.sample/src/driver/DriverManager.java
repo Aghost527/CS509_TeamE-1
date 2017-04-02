@@ -7,10 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import Flight.Flight;
 import Flight.Flights;
 import dao.ServerInterface;
+import utils.Saps;
 
 public class DriverManager {
 	
@@ -20,7 +22,16 @@ public class DriverManager {
 		time=time.equals("")?"2017_05_09":time;
 		departure=departure.equals("")?"BOS":departure;
 		
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"+Saps.timeZoneMap.get(departure)));
+		Date d0=null,d1=null;
+		try {
+			d0 = sdf.parse(time+" 00:00:00");
+			d1 = sdf.parse(time+" 23:59:59");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		ServerInterface resSys = new ServerInterface();
 //		Flights flights = resSys.getFlighs("TeamE","BOS","2017_05_10",true);
@@ -29,6 +40,7 @@ public class DriverManager {
 		flights=flights.filterByArrival(arrival, flights);
 		for(Flight f: flights){
 //			if(f.getDepartureTime().before(arg0))
+			if(f.getDepartureTime().before(d0)|f.getDepartureTime().after(d1)){continue;}
 			Flights tmp=new Flights();
 			tmp.add(f);
 			flist.add(tmp);
@@ -57,11 +69,22 @@ public class DriverManager {
 		Flights flights2 = resSys.getFlightsFor2Days("TeamE",arrival,time,false);
 		flights2.sortByArrivalAirport();
 
-		System.out.println(flights2.size());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"+Saps.timeZoneMap.get(departure)));
+		
+		Date d0=null,d1=null;
+		try {
+			d0 = sdf.parse(time+" 00:00:00");
+			d1 = sdf.parse(time+" 23:59:59");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	
 		for(Flight f1 : flights1){
-//			
+			if(f1.getDepartureTime().before(d0)|f1.getDepartureTime().after(d1)){continue;}
+			
 			for(Flight f2 :flights2){
 				System.out.println(f2.getDeparture());
 				if(f1.getArrival().equals(f2.getDeparture())&f1.getArrivalTime().before(f2.getDepartureTime())){
@@ -98,7 +121,21 @@ public class DriverManager {
 		Flights flights3 = resSys.getFlightsFor2Days("TeamE",arrival,time,false);
 		flights3.sortByArrivalAirport();
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"+Saps.timeZoneMap.get(departure)));
+		
+		Date d0=null,d1=null;
+		try {
+			d0 = sdf.parse(time+" 00:00:00");
+			d1 = sdf.parse(time+" 23:59:59");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		for(Flight f1: flights1){
+			if(f1.getDepartureTime().before(d0)|f1.getDepartureTime().after(d1)){continue;}
+			
 			if(!map.containsKey(f1.getArrival())){
 				map.put(f1.getArrival(),resSys.getFlightsFor2Days("TeamE",f1.getArrival(),time,true) );
 			}

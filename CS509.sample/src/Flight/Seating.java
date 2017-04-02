@@ -6,9 +6,9 @@ public class Seating {
 
 	
 	
-	private String firstclassPrice;
+	private String firstClassPrice;
 	private String coachPrice;
-	private int firstclassRemaining;
+	private int firstClassRemaining;
 	private int coachRemaining;
 	/**
 	 * @param firstclassPrice
@@ -18,9 +18,9 @@ public class Seating {
 	 */
 	public Seating(String firstclassPrice, String coachPrice, int firstclassRemaining, int coachRemaining) {
 		super();
-		this.firstclassPrice = firstclassPrice;
+		this.firstClassPrice = firstclassPrice;
 		this.coachPrice = coachPrice;
-		this.firstclassRemaining = firstclassRemaining;
+		this.firstClassRemaining = firstclassRemaining;
 		this.coachRemaining = coachRemaining;
 	}
 	
@@ -33,19 +33,19 @@ public class Seating {
 	 */
 	@Override
 	public String toString() {
-		return "Seating [firstclassPrice=" + firstclassPrice + ", coachPrice=" + coachPrice + ", firstclassRemaining="
-				+ firstclassRemaining + ", coachRemaining=" + coachRemaining + "]";
+		return "Seating [firstclassPrice=" + firstClassPrice + ", coachPrice=" + coachPrice + ", firstclassRemaining="
+				+ firstClassRemaining + ", coachRemaining=" + coachRemaining + "]";
 	}
 
 
 
 
 
-	public String getFirstclassPrce() {
-		return firstclassPrice;
+	public String getFirstClassPrice() {
+		return firstClassPrice;
 	}
-	public void setFirstclassPrce(String firstclassPrice) {
-		this.firstclassPrice = firstclassPrice;
+	public void setFirstClassPrice(String firstclassPrice) {
+		this.firstClassPrice = firstclassPrice;
 	}
 	public String getCoachPrice() {
 		return coachPrice;
@@ -53,11 +53,11 @@ public class Seating {
 	public void setCoachPrice(String coachPrice) {
 		this.coachPrice = coachPrice;
 	}
-	public int getFirstclassRemaining() {
-		return firstclassRemaining;
+	public int getFirstClassRemaining() {
+		return firstClassRemaining;
 	}
-	public void setFirstclassRemaining(int firstclassRemaining) {
-		this.firstclassRemaining = firstclassRemaining;
+	public void setFirstClassRemaining(int firstclassRemaining) {
+		this.firstClassRemaining = firstclassRemaining;
 	}
 	public int getCoachRemaining() {
 		return coachRemaining;
